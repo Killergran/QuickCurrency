@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using System.Diagnostics;
 
 namespace QuickCurrency
 {
@@ -76,8 +78,16 @@ namespace QuickCurrency
 
         private static string GetApiKey()
         {
-            StreamReader apiKeyFile = new System.IO.StreamReader("apikey.txt");
-            return apiKeyFile.ReadToEnd();
+            try
+            {
+                string path = Path.Combine(AppContext.BaseDirectory, "ApiKey.txt");
+                StreamReader apiKeyFile = new System.IO.StreamReader(path);
+                return apiKeyFile.ReadToEnd();
+            }
+            catch (Exception)
+            {
+                return "YOUR_API_KEY";
+            }
 
         }
     }
