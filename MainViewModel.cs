@@ -6,16 +6,48 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace QuickCurrency
 {
 
 
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
 
         public ObservableCollection<CurrencyExchange> CurrencyExchanges { get; set; }
         private readonly CurrencyService _currencyService;
+        
+        private decimal _inputAmount;
+        public decimal InputAmount
+        {
+            get => _inputAmount;
+            set
+            {
+                if (_inputAmount != value)
+                {
+                    _inputAmount = value;
+                    ConvertAmount(); 
+                    OnPropertyChanged();
+                    
+                }
+            }
+        }
+
+        private decimal _convertedAmount;
+        public decimal ConvertedAmount
+        {
+            get => _convertedAmount;
+            set
+            {
+                if (_convertedAmount != value)
+                {
+                    _convertedAmount = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public MainViewModel()
         {
@@ -76,6 +108,14 @@ namespace QuickCurrency
             }
         }
 
+        private void ConvertAmount()
+        {
+            if (CurrencyExchanges.Any())
+            {
+                var selectedExchangeRate = CurrencyExchanges.First().ExchangeRate; // Assuming the first exchange rate for simplicity
+                ConvertedAmount = InputAmount * selectedExchangeRate;
+            }
+        }
         private static string GetApiKey()
         {
             try
@@ -89,6 +129,12 @@ namespace QuickCurrency
                 return "YOUR_API_KEY";
             }
 
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

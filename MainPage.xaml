@@ -9,7 +9,11 @@
         <local:MainViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout>
+    <StackLayout Padding="10">
+        <Entry Placeholder="Enter amount" Keyboard="Numeric" Text="{Binding InputAmount, Mode=TwoWay}" />
+        <Label Text="Converted Amount:" FontSize="Medium" />
+        <Label Text="{Binding ConvertedAmount}" FontSize="Medium" />
+        
         <ListView ItemsSource="{Binding CurrencyExchanges}">
             <ListView.ItemTemplate>
                 <DataTemplate>
