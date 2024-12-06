@@ -77,8 +77,8 @@ namespace QuickCurrency
                     CurrencyExchanges.Add(new CurrencyExchange
                     {
 
-                        FromCurrency = currency,
-                        ToCurrency = rate.Key,
+                        FromCurrency = rate.Key,
+                        ToCurrency = currency,
                         ExchangeRate = decimal.Parse(invertedRate.ToString("F2"))
                     });
                 }
